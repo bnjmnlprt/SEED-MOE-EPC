@@ -1,0 +1,599 @@
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Contrats Installation SEED</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Off-white, Charcoal, Soft Blue) -->
+    <!-- Application Structure Plan: A three-part SPA (Accueil, Comparateur, Argumentaire) is used to guide the user from foundational knowledge to practical application. The core is the interactive side-by-side comparator, which is the most effective pedagogical tool for differentiating complex options. This structure replaces a linear document flow with an active, user-driven exploration, directly supporting the training's goal of creating autonomous salespeople. -->
+    <!-- Visualization & Content Choices: Report info (Contract details) -> Goal (Compare) -> Viz (Side-by-side text blocks, HTML/CSS diagrams, Integrated HTML/CSS progress bars) -> Interaction (User clicks a criterion to update all views simultaneously). Justification: Direct comparison is superior to sequential reading. Integrated bars for Risk/CA potential provide immediate visual context within the analysis section, removing the need for a separate, confusing visualization tab. Report info (Sales pitch) -> Goal (Apply) -> Viz (Interactive decision tree, Accordion for objections). Justification: These interactive elements mimic the real-world sales process and make learning the material more engaging. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #333333;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active {
+            border-bottom-color: #3B82F6;
+            color: #FFFFFF;
+        }
+        .diagram-box {
+            border: 2px solid #9CA3AF;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            background-color: white;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            min-width: 120px;
+        }
+        .diagram-arrow {
+            position: relative;
+            flex-grow: 1;
+            height: 2px;
+            background-color: #6B7280;
+            margin: 0 1rem;
+        }
+        .diagram-arrow-label {
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #F8F7F4; /* Match the section background */
+            padding: 0 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4B5563;
+            white-space: nowrap;
+        }
+        #schema-content-display .diagram-arrow-label {
+             background-color: #F9FAFB; /* Match the tab content background */
+        }
+        .diagram-arrow::after {
+            content: '';
+            position: absolute;
+            right: -1px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 8px solid #6B7280;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .clause-box {
+            background-color: #E0E7FF;
+            border-left: 4px solid #4F46E5;
+            padding: 1rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #312E81;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-gray-800 sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center gap-4">
+                    <a href="#accueil">
+                        <img src="https://www.helexia.green/wp-content/uploads/2023/12/helexia-logo-header-white.svg" alt="Logo Helexia" class="h-8">
+                    </a>
+                    <h1 class="hidden md:block text-xl font-bold text-white">Formation Contrats Installation SEED</h1>
+                </div>
+                <nav class="hidden sm:flex items-center space-x-4 lg:space-x-8">
+                    <a href="#accueil" class="nav-link text-gray-300 hover:text-white font-medium pb-1">Les Bases</a>
+                    <a href="#comparateur" class="nav-link text-gray-300 hover:text-white font-medium pb-1">Comparateur</a>
+                    <a href="#argumentaire" class="nav-link text-gray-300 hover:text-white font-medium pb-1">Argumentaire</a>
+                </nav>
+                <div class="sm:hidden">
+                    <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-700 text-white">
+                        <option value="accueil">Les Bases</option>
+                        <option value="comparateur">Comparateur</option>
+                        <option value="argumentaire">Argumentaire</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="accueil" class="main-section container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Les Fondations du Projet</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Avant de comparer les contrats, il est essentiel de maîtriser le vocabulaire et les concepts fondamentaux. Cette section définit les rôles de chaque acteur et explique la différence capitale entre une obligation de moyens et une obligation de résultat.</p>
+            </div>
+
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-center mb-8">Les 4 Acteurs Clés</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-3">👤</div>
+                        <h4 class="font-bold text-lg">Maître d'Ouvrage (MOA)</h4>
+                        <p class="text-gray-600 mt-2">Le Client. Le décideur final et propriétaire du projet. Il exprime le besoin et fixe les objectifs.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-3">💡</div>
+                        <h4 class="font-bold text-lg">Assistant à Maîtrise d'Ouvrage (AMO)</h4>
+                        <p class="text-gray-600 mt-2">Le Conseiller. Notre rôle est d'éclairer le client pour l'aider à prendre les meilleures décisions.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-3">🧑‍✈️</div>
+                        <h4 class="font-bold text-lg">Maître d'Œuvre (MOE)</h4>
+                        <p class="text-gray-600 mt-2">Le Pilote. Nous concevons la solution et dirigeons les travaux pour garantir leur conformité.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-4xl mb-3">👷</div>
+                        <h4 class="font-bold text-lg">Entreprise de Travaux</h4>
+                        <p class="text-gray-600 mt-2">Le Réalisateur. Le sous-traitant qui exécute physiquement l'installation des équipements.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-2xl font-bold text-center mb-8">Moyens vs. Résultat : Le Concept Clé</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg border-l-4 border-blue-500 shadow-md">
+                        <h4 class="font-bold text-xl mb-3">Obligation de Moyens</h4>
+                        <p class="text-gray-700">S'engager à tout mettre en œuvre (compétences, ressources) pour atteindre un but, sans garantir le résultat final. La preuve d'une faute incombe au client.</p>
+                        <p class="mt-4 text-sm text-gray-500"><strong>Analogie:</strong> Un médecin qui s'engage à fournir les meilleurs soins possibles.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border-l-4 border-green-500 shadow-md">
+                        <h4 class="font-bold text-xl mb-3">Obligation de Résultat</h4>
+                        <p class="text-gray-700">S'engager à ce que l'objectif soit atteint. La simple non-atteinte du résultat suffit à engager la responsabilité.</p>
+                        <p class="mt-4 text-sm text-gray-500"><strong>Analogie:</strong> Un transporteur qui s'engage à livrer un colis à bon port.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparateur" class="main-section bg-white py-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Comparateur Interactif des Contrats</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Utilisez les boutons ci-dessous pour comparer les contrats AMO, MOE et EPC sur des critères spécifiques. Cette vue côte à côte est conçue pour mettre en évidence leurs différences fondamentales et vous aider à les maîtriser.</p>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-10">
+                    <button data-criterion="role" class="comparator-btn bg-blue-500 text-white px-4 py-2 rounded-full shadow">Rôle d'Helexia</button>
+                    <button data-criterion="schema" class="comparator-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full">Schéma Contractuel</button>
+                    <button data-criterion="obligations" class="comparator-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full">Obligations & Assurances</button>
+                    <button data-criterion="analyse" class="comparator-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full">Analyse Commerciale</button>
+                </div>
+
+                <div id="comparator-content">
+                    <div id="comparator-grid-view" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                            <h3 class="font-bold text-2xl text-center mb-4">AMO</h3>
+                            <div id="content-amo" class="space-y-4"></div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                            <h3 class="font-bold text-2xl text-center mb-4">MOE</h3>
+                            <div id="content-moe" class="space-y-4"></div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                            <h3 class="font-bold text-2xl text-center mb-4">EPC</h3>
+                            <div id="content-epc" class="space-y-4"></div>
+                        </div>
+                    </div>
+
+                    <div id="schema-details-view" class="hidden">
+                        <div id="schema-tabs" class="border-b border-gray-200 mb-6">
+                            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                                <button data-schema="amo" class="schema-tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">AMO</button>
+                                <button data-schema="moe" class="schema-tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">MOE</button>
+                                <button data-schema="epc" class="schema-tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">EPC</button>
+                            </nav>
+                        </div>
+                        <div id="schema-content-display" class="bg-gray-50 p-6 sm:p-8 rounded-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="argumentaire" class="main-section container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">L'Argumentaire Commercial</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Cette section est votre boîte à outils. Utilisez l'arbre de décision pour orienter votre proposition et préparez-vous à répondre aux objections les plus courantes avec des arguments solides et clairs.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6">Arbre de Décision Commercial</h3>
+                    <div id="decision-tree" class="bg-white p-6 rounded-lg shadow-md">
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-6">Réponses aux Objections</h3>
+                    <div id="objections-accordion" class="space-y-4">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
+            <p>&copy; Helexia 2025</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const trainingData = {
+                role: {
+                    amo: `<h4 class="font-semibold text-lg">Le Conseiller Stratégique</h4><p class="text-gray-600">Notre promesse : "Nous vous aidons à piloter, vous gardez le contrôle." Nous sommes le bras droit technique du client, nous l'aidons à définir le besoin, analyser les offres et suivre le projet sans décider à sa place.</p>`,
+                    moe: `<h4 class="font-semibold text-lg">Le Chef d'Orchestre</h4><p class="text-gray-600">Notre promesse : "Nous pilotons votre projet de A à Z, vous n'avez qu'un seul interlocuteur." Nous concevons la solution et dirigeons l'exécution des travaux jusqu'à la réception.</p>`,
+                    epc: `<h4 class="font-semibold text-lg">Le Garant de la Performance</h4><p class="text-gray-600">Notre promesse : "Nous garantissons vos futures économies d'énergie." Nous nous engageons sur un résultat chiffré et mesurable, transformant un projet technique en un investissement à ROI garanti.</p>`
+                },
+                schema: {
+                    amo: `
+                        <div class="space-y-8">
+                            <div>
+                                <h4 class="font-semibold text-xl text-center mb-6">Schéma AMO : Le Client pilote</h4>
+                                <div class="flex flex-col space-y-8 items-center">
+                                    <div class="flex items-center w-full max-w-2xl">
+                                        <div class="diagram-box">Client</div>
+                                        <div class="diagram-arrow"><span class="diagram-arrow-label">Contrat AMO</span></div>
+                                        <div class="diagram-box">Helexia</div>
+                                    </div>
+                                    <div class="flex items-center w-full max-w-2xl">
+                                        <div class="diagram-box">Client</div>
+                                        <div class="diagram-arrow"><span class="diagram-arrow-label">Contrat Travaux</span></div>
+                                        <div class="diagram-box">Entreprise</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <h5 class="font-bold text-lg mb-3">Obligations Générales</h5>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                        <li><b>Client :</b> Doit prendre les décisions, fournir les informations, et payer Helexia ET l'Entreprise.</li>
+                                        <li><b>Helexia :</b> Doit conseiller et assister le client (obligation de moyens).</li>
+                                        <li><b>Entreprise :</b> Doit réaliser les travaux pour le Client (obligation de résultat).</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-lg mb-3">Flux Financiers (Qui paie qui ?)</h5>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                        <li><b>Client → Helexia</b> (pour les honoraires de conseil).</li>
+                                        <li><b>Client → Entreprise</b> (pour les factures de travaux).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <hr>
+                             <div>
+                                <h5 class="font-bold text-lg mb-3 text-center">Cas Concret : Installation CVC</h5>
+                                <div class="grid md:grid-cols-2 gap-8 mt-4">
+                                    <div class="bg-white p-4 rounded-lg border">
+                                        <h6 class="font-semibold">Rôle d'Helexia</h6>
+                                        <p class="text-sm text-gray-600 mt-2">Nous aidons le client à rédiger le cahier des charges, à analyser les devis de 3 installateurs CVC, et nous recommandons le plus pertinent. Nous suivons les réunions de chantier pour le client.</p>
+                                        <p class="text-sm text-gray-600 mt-2"><b>Obligation :</b> Notre responsabilité s'arrête à la qualité de notre conseil. Si l'installateur choisi par le client fait mal son travail, ce n'est pas notre faute (sauf si nous avons mal conseillé).</p>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-lg border">
+                                        <h6 class="font-semibold">Rôle du Prestataire (Installateur CVC)</h6>
+                                        <p class="text-sm text-gray-600 mt-2">Il signe un contrat directement avec le client. Il est responsable de la bonne installation du matériel CVC conformément au devis accepté par le client.</p>
+                                        <p class="text-sm text-gray-600 mt-2"><b>Obligation :</b> Il a une obligation de résultat envers le client. La CVC doit fonctionner.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    moe: `
+                       <div class="space-y-8">
+                            <div>
+                                <h4 class="font-semibold text-xl text-center mb-6">Schéma MOE : Helexia pilote</h4>
+                                <div class="flex items-center justify-center">
+                                    <div class="flex items-center w-full max-w-4xl">
+                                        <div class="diagram-box">Client</div>
+                                        <div class="diagram-arrow"><span class="diagram-arrow-label">Contrat MOE</span></div>
+                                        <div class="diagram-box">Helexia</div>
+                                        <div class="diagram-arrow"><span class="diagram-arrow-label">Contrat de Sous-traitance</span></div>
+                                        <div class="diagram-box">Entreprise</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <h5 class="font-bold text-lg mb-3">Obligations Générales</h5>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                        <li><b>Client :</b> Doit payer Helexia pour la mission globale et valider les étapes clés.</li>
+                                        <li><b>Helexia :</b> Doit concevoir, piloter les travaux, et porter la responsabilité d'un <b>ouvrage fonctionnel</b>.</li>
+                                        <li><b>Entreprise :</b> Doit réaliser les travaux pour Helexia (son client direct).</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-lg mb-3">Flux Financiers (Qui paie qui ?)</h5>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                        <li><b>Client → Helexia</b> (pour la totalité de la mission).</li>
+                                        <li><b>Helexia → Entreprise</b> (pour les travaux sous-traités).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <hr>
+                            <div>
+                                <h5 class="font-bold text-lg mb-3 text-center">Cas Concret : Installation CVC</h5>
+                                <div class="grid md:grid-cols-2 gap-8 mt-4">
+                                    <div class="bg-white p-4 rounded-lg border">
+                                        <h6 class="font-semibold">Rôle d'Helexia</h6>
+                                        <p class="text-sm text-gray-600 mt-2">Nous concevons la solution CVC, nous choisissons l'installateur, nous signons le contrat avec lui, et nous pilotons le chantier. Nous sommes l'unique responsable face au client.</p>
+                                        <p class="text-sm text-gray-600 mt-2"><b>Obligation :</b> Nous avons une obligation de résultat sur la <b>conformité et le bon fonctionnement</b> de l'ouvrage.</p>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-lg border">
+                                        <h6 class="font-semibold">Rôle du Prestataire (Installateur CVC)</h6>
+                                        <p class="text-sm text-gray-600 mt-2">Il est notre sous-traitant. Il doit installer la CVC selon les plans et spécifications que nous lui avons fournis.</p>
+                                        <p class="text-sm text-gray-600 mt-2"><b>Obligation :</b> Il a une obligation de résultat envers nous, Helexia, sur la qualité de son exécution.</p>
+                                    </div>
+                                </div>
+                                <div class="mt-6">
+                                    <h6 class="font-semibold mb-2">Exemple de Clause de Responsabilité (MOE)</h6>
+                                    <div class="clause-box">Helexia s'engage à livrer un ouvrage conforme aux spécifications du cahier des charges et apte à sa destination. La responsabilité d'Helexia est engagée si l'ouvrage présente des vices ou des malfaçons le rendant impropre à l'usage auquel il est destiné, que ces défauts proviennent de la conception ou de l'exécution.</div>
+                                </div>
+                                <div class="mt-6 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                    <p class="text-sm font-semibold">Conclusion : Qui porte l'obligation de résultat ?</p>
+                                    <p class="text-sm text-gray-700 mt-1">Envers le client, c'est <b>TOUJOURS Helexia</b> qui porte l'obligation de résultat pour la conformité et le bon fonctionnement de l'ouvrage. Si la CVC ne marche pas, c'est notre responsabilité. Notre recours contre le prestataire est notre affaire interne. La MOE garantit un ouvrage fonctionnel, mais pas une performance chiffrée.</p>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    epc: `
+                        <div class="space-y-8">
+                            <div>
+                                <h4 class="font-semibold text-xl text-center mb-6">Schéma EPC : Helexia garantit</h4>
+                                <div class="flex items-center justify-center">
+                                    <div class="flex items-center w-full max-w-4xl">
+                                        <div class="diagram-box">Client</div>
+                                        <div class="diagram-arrow"><span class="diagram-arrow-label">Contrat de Performance Énergétique</span></div>
+                                        <div class="diagram-box">Helexia</div>
+                                        <div class="diagram-arrow"><span class="diagram-arrow-label">Contrat de Sous-traitance</span></div>
+                                        <div class="diagram-box">Entreprise</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    <h5 class="font-bold text-lg mb-3">Obligations Générales</h5>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                        <li><b>Client :</b> Doit payer Helexia et respecter les conditions d'usage du bâtiment.</li>
+                                        <li><b>Helexia :</b> Mêmes obligations qu'en MOE, AVEC en plus une <b>obligation de résultat sur la performance chiffrée</b>.</li>
+                                        <li><b>Entreprise :</b> Mêmes obligations qu'en MOE.</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-lg mb-3">Flux Financiers (Qui paie qui ?)</h5>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                        <li><b>Client → Helexia</b> (pour la totalité de la mission).</li>
+                                        <li><b>Helexia → Entreprise</b> (pour les travaux).</li>
+                                        <li class="text-red-600 font-medium"><b>Helexia → Client</b> (en cas de non-performance).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <hr>
+                             <div>
+                                <h5 class="font-bold text-lg mb-3 text-center">Cas Concret : Installation CVC</h5>
+                                <div class="grid md:grid-cols-2 gap-8 mt-4">
+                                    <div class="bg-white p-4 rounded-lg border">
+                                        <h6 class="font-semibold">Rôle d'Helexia</h6>
+                                        <p class="text-sm text-gray-600 mt-2">Nous concevons, pilotons l'installation et, surtout, nous nous engageons à ce que la nouvelle CVC permette au client d'économiser 100 MWh/an.</p>
+                                        <p class="text-sm text-gray-600 mt-2"><b>Obligation :</b> Nous avons une obligation de résultat sur la <b>performance énergétique</b>. Si l'économie n'est que de 80 MWh, notre responsabilité est engagée.</p>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-lg border">
+                                        <h6 class="font-semibold">Rôle du Prestataire (Installateur CVC)</h6>
+                                        <p class="text-sm text-gray-600 mt-2">Il est notre sous-traitant. Il doit installer la CVC parfaitement, selon nos plans, pour qu'elle puisse atteindre la performance attendue.</p>
+                                        <p class="text-sm text-gray-600 mt-2"><b>Obligation :</b> Il a une obligation de résultat sur la qualité de son installation envers nous, Helexia.</p>
+                                    </div>
+                                </div>
+                                <div class="mt-6">
+                                    <h6 class="font-semibold mb-2">Exemple de Clause de Responsabilité (EPC)</h6>
+                                    <div class="clause-box">Helexia garantit que l'Ouvrage permettra d'atteindre la Performance Énergétique définie en Annexe X. En cas de non-atteinte de la performance garantie, constatée contradictoirement selon le protocole de Mesure & Vérification, Helexia s'engage, à ses frais, à réaliser les actions correctives nécessaires pour rétablir la performance. Helexia indemnisera également le Client pour le préjudice subi du fait de la moindre performance durant la période concernée.</div>
+                                </div>
+                                <div class="mt-6 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                                    <p class="text-sm font-semibold">Conclusion : Qui porte l'obligation de résultat ?</p>
+                                    <p class="text-sm text-gray-700 mt-1">Helexia porte une <b>double obligation de résultat</b> envers le client : celle de la conformité de l'ouvrage (comme en MOE) ET celle de la performance énergétique chiffrée. C'est cette seconde garantie qui fait toute la spécificité et la valeur de l'EPC.</p>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                },
+                obligations: {
+                    amo: `<h4 class="font-semibold text-lg">Obligation de Moyens</h4><p class="text-gray-600">Notre devoir est de bien conseiller.</p><hr class="my-3"><h4 class="font-semibold text-lg">Assurance Requise</h4><p class="text-gray-600">Responsabilité Civile Professionnelle (RC Pro).</p>`,
+                    moe: `<h4 class="font-semibold text-lg">Résultat (Ouvrage fonctionnel)</h4><p class="text-gray-600">Nous garantissons la conformité et le bon fonctionnement de l'ouvrage.</p><hr class="my-3"><h4 class="font-semibold text-lg">Assurances Requises</h4><p class="text-gray-600">RC Pro + <b>RC Décennale OBLIGATOIRE</b>.</p>`,
+                    epc: `<h4 class="font-semibold text-lg">Double Résultat (Ouvrage + Performance)</h4><p class="text-gray-600">Nous garantissons l'ouvrage ET la performance énergétique chiffrée.</p><hr class="my-3"><h4 class="font-semibold text-lg">Assurances Requises</h4><p class="text-gray-600">RC Pro + RC Décennale + Garanties financières.</p>`
+                },
+                analyse: {
+                    amo: `<h4 class="font-semibold text-lg">Risques & Opportunités</h4><p class="text-gray-600">Contrat simple, cycle de vente court. Idéal pour clients déjà structurés. CA limité aux honoraires.</p><div class="mt-6"><p class="font-semibold text-sm mb-1">Risque pour le Client</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-red-500 h-4 rounded-full" style="width: 80%"></div></div></div><div class="mt-4"><p class="font-semibold text-sm mb-1">Potentiel de CA pour Helexia</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-blue-500 h-4 rounded-full" style="width: 20%"></div></div></div>`,
+                    moe: `<h4 class="font-semibold text-lg">Risques & Opportunités</h4><p class="text-gray-600">CA élevé (honoraires + marge travaux). Contrôle total de la qualité. Proposition de valeur forte (tranquillité).</p><div class="mt-6"><p class="font-semibold text-sm mb-1">Risque pour le Client</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-yellow-500 h-4 rounded-full" style="width: 30%"></div></div></div><div class="mt-4"><p class="font-semibold text-sm mb-1">Potentiel de CA pour Helexia</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-blue-500 h-4 rounded-full" style="width: 70%"></div></div></div>`,
+                    epc: `<h4 class="font-semibold text-lg">Risques & Opportunités</h4><p class="text-gray-600">CA et marges les plus élevés. Contrats longs et récurrents. Argument commercial ultime pour DAFs.</p><div class="mt-6"><p class="font-semibold text-sm mb-1">Risque pour le Client</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-green-500 h-4 rounded-full" style="width: 5%"></div></div></div><div class="mt-4"><p class="font-semibold text-sm mb-1">Potentiel de CA pour Helexia</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-blue-500 h-4 rounded-full" style="width: 100%"></div></div></div>`
+                }
+            };
+
+            const comparatorBtns = document.querySelectorAll('.comparator-btn');
+            const gridView = document.getElementById('comparator-grid-view');
+            const schemaView = document.getElementById('schema-details-view');
+            const contentAmo = document.getElementById('content-amo');
+            const contentMoe = document.getElementById('content-moe');
+            const contentEpc = document.getElementById('content-epc');
+
+            function updateComparator(criterion) {
+                if (criterion === 'schema') {
+                    gridView.classList.add('hidden');
+                    schemaView.classList.remove('hidden');
+                    setupSchemaTabs();
+                } else {
+                    schemaView.classList.add('hidden');
+                    gridView.classList.remove('hidden');
+                    contentAmo.innerHTML = trainingData[criterion].amo;
+                    contentMoe.innerHTML = trainingData[criterion].moe;
+                    contentEpc.innerHTML = trainingData[criterion].epc;
+                }
+
+                comparatorBtns.forEach(btn => {
+                    btn.classList.toggle('bg-blue-500', btn.dataset.criterion === criterion);
+                    btn.classList.toggle('text-white', btn.dataset.criterion === criterion);
+                    btn.classList.toggle('bg-gray-200', btn.dataset.criterion !== criterion);
+                    btn.classList.toggle('text-gray-700', btn.dataset.criterion !== criterion);
+                });
+            }
+
+            function setupSchemaTabs() {
+                const tabButtons = document.querySelectorAll('.schema-tab-btn');
+                const schemaContentDisplay = document.getElementById('schema-content-display');
+
+                function showSchema(schemaName) {
+                    schemaContentDisplay.innerHTML = trainingData.schema[schemaName];
+                    tabButtons.forEach(btn => {
+                        const isSelected = btn.dataset.schema === schemaName;
+                        btn.classList.toggle('border-blue-500', isSelected);
+                        btn.classList.toggle('text-blue-600', isSelected);
+                        btn.classList.toggle('border-transparent', !isSelected);
+                        btn.classList.toggle('text-gray-500', !isSelected);
+                        btn.classList.toggle('hover:text-gray-700', !isSelected);
+                        btn.classList.toggle('hover:border-gray-300', !isSelected);
+                    });
+                }
+
+                tabButtons.forEach(btn => {
+                    btn.addEventListener('click', () => showSchema(btn.dataset.schema));
+                });
+
+                showSchema('amo'); // Show the first tab by default
+            }
+
+            comparatorBtns.forEach(btn => {
+                btn.addEventListener('click', () => updateComparator(btn.dataset.criterion));
+            });
+            
+            updateComparator('role'); // Initialize with the first criterion
+
+            // Argumentaire Section Logic
+            const decisionTreeContainer = document.getElementById('decision-tree');
+            const objectionsContainer = document.getElementById('objections-accordion');
+
+            function renderDecisionTree(step) {
+                let content = '';
+                switch (step) {
+                    case 1:
+                        content = `<p class="font-semibold text-lg mb-4">1. Le client veut-il gérer lui-même ses contrats travaux et ses artisans ?</p><div class="flex space-x-4"><button onclick="window.renderDecisionTree(2)" class="bg-blue-500 text-white px-4 py-2 rounded-md w-full">NON</button><button onclick="window.renderDecisionTree('amo')" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md w-full">OUI</button></div>`;
+                        break;
+                    case 2:
+                        content = `<p class="font-semibold text-lg mb-4">2. Le client veut-il une garantie contractuelle sur ses futures économies d'énergie ?</p><div class="flex space-x-4"><button onclick="window.renderDecisionTree('epc')" class="bg-blue-500 text-white px-4 py-2 rounded-md w-full">OUI</button><button onclick="window.renderDecisionTree('moe')" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md w-full">NON</button></div><button onclick="window.renderDecisionTree(1)" class="text-sm text-blue-600 mt-4 block">Retour</button>`;
+                        break;
+                    case 'amo':
+                        content = `<div class="text-center p-4 bg-blue-100 border-l-4 border-blue-500 rounded"><p class="font-bold text-xl">Proposer l'AMO</p><p class="mt-2 text-gray-700">C'est un client qui veut garder la maîtrise et qui a les ressources pour le faire.</p></div><button onclick="window.renderDecisionTree(1)" class="text-sm text-blue-600 mt-4 block mx-auto">Recommencer</button>`;
+                        break;
+                    case 'moe':
+                        content = `<div class="text-center p-4 bg-green-100 border-l-4 border-green-500 rounded"><p class="font-bold text-xl">Proposer la MOE</p><p class="mt-2 text-gray-700">C'est la solution "confort et sécurité" par excellence pour un projet bien mené sans souci.</p></div><button onclick="window.renderDecisionTree(1)" class="text-sm text-blue-600 mt-4 block mx-auto">Recommencer</button>`;
+                        break;
+                    case 'epc':
+                        content = `<div class="text-center p-4 bg-yellow-100 border-l-4 border-yellow-500 rounded"><p class="font-bold text-xl">Proposer l'EPC</p><p class="mt-2 text-gray-700">Son besoin n'est pas un projet, c'est une performance financière garantie. C'est votre meilleur argument.</p></div><button onclick="window.renderDecisionTree(1)" class="text-sm text-blue-600 mt-4 block mx-auto">Recommencer</button>`;
+                        break;
+                }
+                decisionTreeContainer.innerHTML = content;
+            }
+            window.renderDecisionTree = renderDecisionTree;
+            renderDecisionTree(1);
+
+            const objections = [
+                 { 
+                    q: "Pourquoi choisir une MOE plutôt qu'un EPC ?",
+                    a: `C'est une excellente question. L'EPC offre la sécurité maximale, mais la MOE est souvent le meilleur compromis pour plusieurs raisons :<br><br>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><b>Le Coût :</b> Un EPC est plus cher car nous intégrons le coût de la garantie et des études de risque plus poussées. La MOE est plus compétitive pour un client dont le budget est le critère principal.</li>
+                            <li><b>L'Objectif du Client :</b> Un client qui veut simplement un projet "clé en main" bien réalisé sans se soucier de la gestion des artisans trouvera son bonheur avec la MOE. Il achète de la tranquillité technique. Le client EPC, lui, achète une garantie financière.</li>
+                            <li><b>La Simplicité :</b> La MOE est contractuellement plus simple et plus rapide à mettre en place qu'un EPC qui nécessite un plan de Mesure & Vérification complexe.</li>
+                        </ul><br>
+                        En résumé, la MOE est l'offre "confort et expertise" là où l'EPC est l'offre "garantie et investissement".`
+                },
+                { 
+                    q: "En MOE/EPC, le recours du client n'est-il pas compliqué ?",
+                    a: "Au contraire, il est simplifié. Dans les deux cas, le client n'a qu'un seul interlocuteur et responsable : Helexia. Si un problème survient, il se tourne vers nous. C'est ensuite à nous de gérer le recours contre notre sous-traitant. Le client est totalement protégé de ces démarches. La différence est que pour l'EPC, le client n'a même pas à prouver la faute, juste la non-atteinte de la performance."
+                },
+                { 
+                    q: "L'offre EPC est plus chère et compliquée...",
+                    a: "La complexité technique et le suivi sont justement ce que nous prenons en charge. Pour le client, le résultat est au contraire très simple : <strong>une ligne dans son budget qui est garantie</strong>. Nous transformons un risque technique et une dépense variable en une certitude financière. C'est l'offre la plus simple du point de vue d'un directeur financier."
+                }
+            ];
+            
+            objectionsContainer.innerHTML = objections.map(item => `<div class="bg-white rounded-lg shadow-md"><button class="accordion-btn w-full text-left p-4 font-semibold flex justify-between items-center"><span>${item.q}</span><span class="transform transition-transform duration-300 ">▼</span></button><div class="accordion-content px-4"><p class="text-gray-600 pb-4">${item.a}</p></div></div>`).join('');
+            
+            document.querySelectorAll('.accordion-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const arrow = button.querySelector('span:last-child');
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        arrow.style.transform = 'rotate(0deg)';
+                    } else {
+                        document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                        document.querySelectorAll('.accordion-btn span:last-child').forEach(a => a.style.transform = 'rotate(0deg)');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        arrow.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            // Navigation Logic
+            const mainSections = document.querySelectorAll('.main-section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileNav = document.getElementById('mobile-nav');
+
+            function setActiveSection(sectionId) {
+                mainSections.forEach(section => {
+                    section.style.display = (section.id === sectionId) ? 'block' : 'none';
+                });
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${sectionId}`);
+                });
+                if (document.activeElement !== mobileNav) {
+                    mobileNav.value = sectionId;
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = link.getAttribute('href').substring(1);
+                    setActiveSection(sectionId);
+                    window.history.pushState({section: sectionId}, '', `#${sectionId}`);
+                });
+            });
+            
+            mobileNav.addEventListener('change', (e) => {
+                setActiveSection(e.target.value);
+                window.history.pushState({section: e.target.value}, '', `#${e.target.value}`);
+            });
+
+            window.addEventListener('popstate', (e) => {
+                if (e.state && e.state.section) {
+                    setActiveSection(e.state.section);
+                } else {
+                    setActiveSection('accueil');
+                }
+            });
+
+            const initialSection = window.location.hash ? window.location.hash.substring(1) : 'accueil';
+            setActiveSection(initialSection);
+        });
+    </script>
+</body>
+</html>
