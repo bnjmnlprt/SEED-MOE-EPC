@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -10,8 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Calm Harmony (Off-white, Charcoal, Soft Blue) -->
-    <!-- Application Structure Plan: A three-part SPA (Accueil, Comparateur, Argumentaire) is used to guide the user from foundational knowledge to practical application. The core is the interactive side-by-side comparator, which is the most effective pedagogical tool for differentiating complex options. This structure replaces a linear document flow with an active, user-driven exploration, directly supporting the training's goal of creating autonomous salespeople. -->
-    <!-- Visualization & Content Choices: Report info (Contract details) -> Goal (Compare) -> Viz (Side-by-side text blocks, HTML/CSS diagrams, Integrated HTML/CSS progress bars) -> Interaction (User clicks a criterion to update all views simultaneously). Justification: Direct comparison is superior to sequential reading. Integrated bars for Risk/CA potential provide immediate visual context within the analysis section, removing the need for a separate, confusing visualization tab. Report info (Sales pitch) -> Goal (Apply) -> Viz (Interactive decision tree, Accordion for objections). Justification: These interactive elements mimic the real-world sales process and make learning the material more engaging. -->
+    <!-- Application Structure Plan: A four-part SPA (Accueil, Comparateur, Argumentaire, Questionnaire) is used to guide the user from foundational knowledge to practical application and self-assessment. The core remains the interactive comparator. The new questionnaire section provides a clear pedagogical loop (test-learn-retest). -->
+    <!-- Visualization & Content Choices: Report info (Contract details) -> Goal (Compare) -> Viz (Side-by-side text blocks, HTML/CSS diagrams, Integrated HTML/CSS progress bars with text examples) -> Interaction (User clicks a criterion to update all views). Justification: Adding text examples to the risk analysis makes the abstract data tangible. Report info (Learning assessment) -> Goal (Evaluate) -> Viz (Tabbed quiz interface). Justification: An Avant/Après structure allows users to measure their knowledge gain, making the training more effective. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -48,15 +48,12 @@
             top: -22px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #F8F7F4; /* Match the section background */
+            background-color: #F9FAFB;
             padding: 0 8px;
             font-size: 0.875rem;
             font-weight: 500;
             color: #4B5563;
             white-space: nowrap;
-        }
-        #schema-content-display .diagram-arrow-label {
-             background-color: #F9FAFB; /* Match the tab content background */
         }
         .diagram-arrow::after {
             content: '';
@@ -101,12 +98,14 @@
                     <a href="#accueil" class="nav-link text-gray-300 hover:text-white font-medium pb-1">Les Bases</a>
                     <a href="#comparateur" class="nav-link text-gray-300 hover:text-white font-medium pb-1">Comparateur</a>
                     <a href="#argumentaire" class="nav-link text-gray-300 hover:text-white font-medium pb-1">Argumentaire</a>
+                    <a href="#questionnaire" class="nav-link text-gray-300 hover:text-white font-medium pb-1">Questionnaire</a>
                 </nav>
                 <div class="sm:hidden">
                     <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-700 text-white">
                         <option value="accueil">Les Bases</option>
                         <option value="comparateur">Comparateur</option>
                         <option value="argumentaire">Argumentaire</option>
+                        <option value="questionnaire">Questionnaire</option>
                     </select>
                 </div>
             </div>
@@ -119,30 +118,88 @@
                 <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Les Fondations du Projet</h2>
                 <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Avant de comparer les contrats, il est essentiel de maîtriser le vocabulaire et les concepts fondamentaux. Cette section définit les rôles de chaque acteur et explique la différence capitale entre une obligation de moyens et une obligation de résultat.</p>
             </div>
+            
+            <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-md mb-12 max-w-4xl mx-auto" role="alert">
+                <div class="flex">
+                    <div class="py-1"><svg class="fill-current h-6 w-6 text-blue-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM9 11v4h2v-4H9zm0-4h2v2H9V7z"/></svg></div>
+                    <div>
+                        <p class="font-bold">Évaluez vos connaissances !</p>
+                        <p class="text-sm">Avant de commencer, nous vous recommandons de répondre à notre questionnaire pour évaluer votre niveau de départ.</p>
+                        <a href="#questionnaire" id="alert-quiz-link" class="mt-2 inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700">Aller au questionnaire</a>
+                    </div>
+                </div>
+            </div>
 
             <div class="mb-12">
-                <h3 class="text-2xl font-bold text-center mb-8">Les 4 Acteurs Clés</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                        <div class="text-4xl mb-3">👤</div>
-                        <h4 class="font-bold text-lg">Maître d'Ouvrage (MOA)</h4>
-                        <p class="text-gray-600 mt-2">Le Client. Le décideur final et propriétaire du projet. Il exprime le besoin et fixe les objectifs.</p>
+                <h3 class="text-2xl font-bold text-center mb-8">Les Acteurs Fondamentaux d'un Projet</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-xl mb-3">👤 Client / Maître d’Ouvrage (MOA)</h4>
+                        <p class="text-gray-700 mb-2"><b>Rôle :</b> Le porteur du projet, celui qui définit le besoin, le budget et le calendrier. C'est le propriétaire final de l'ouvrage.</p>
+                        <p class="text-gray-700"><b>Responsabilité :</b> Prendre les décisions finales, valider les étapes, et assurer le financement du projet.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                        <div class="text-4xl mb-3">💡</div>
-                        <h4 class="font-bold text-lg">Assistant à Maîtrise d'Ouvrage (AMO)</h4>
-                        <p class="text-gray-600 mt-2">Le Conseiller. Notre rôle est d'éclairer le client pour l'aider à prendre les meilleures décisions.</p>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-xl mb-3">👷 Prestataire / Entreprise de Travaux</h4>
+                        <p class="text-gray-700 mb-2"><b>Rôle :</b> Le réalisateur technique du projet. Il exécute les travaux de construction ou d'installation.</p>
+                        <p class="text-gray-700"><b>Responsabilité :</b> Mettre en œuvre les plans et spécifications techniques, en respectant les règles de l'art, la sécurité et les délais convenus.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                        <div class="text-4xl mb-3">🧑‍✈️</div>
-                        <h4 class="font-bold text-lg">Maître d'Œuvre (MOE)</h4>
-                        <p class="text-gray-600 mt-2">Le Pilote. Nous concevons la solution et dirigeons les travaux pour garantir leur conformité.</p>
+                </div>
+            </div>
+
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-center mb-8">Les Rôles d'Helexia : AMO, MOE, EPCiste</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-xl mb-3">🧭 Assistant à Maîtrise d’Ouvrage (AMO)</h4>
+                        <p class="text-gray-700 mb-2"><b>Rôle :</b> L’AMO accompagne le maître d’ouvrage (le client) dans la définition, la gestion et le pilotage du projet.</p>
+                        <p class="text-gray-700"><b>Responsabilité :</b> Aide à la rédaction du cahier des charges, conseil sur les choix techniques, juridiques, financiers et suivi du projet.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
-                        <div class="text-4xl mb-3">👷</div>
-                        <h4 class="font-bold text-lg">Entreprise de Travaux</h4>
-                        <p class="text-gray-600 mt-2">Le Réalisateur. Le sous-traitant qui exécute physiquement l'installation des équipements.</p>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-xl mb-3">🏗️ Maître d’œuvre (MOE)</h4>
+                        <p class="text-gray-700 mb-2"><b>Rôle :</b> Le maître d’œuvre est responsable de la conception technique du projet et du suivi de sa réalisation.</p>
+                        <p class="text-gray-700"><b>Responsabilité :</b> Élaboration des plans, coordination des entreprises et suivi du respect des délais, du budget et de la qualité.</p>
                     </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h4 class="font-bold text-xl mb-3">🔧 EPCiste (Engineering, Procurement, Construction)</h4>
+                        <p class="text-gray-700 mb-2"><b>Rôle :</b> L’EPCiste est une entreprise ou un consortium qui prend en charge l’ingénierie, les achats et la construction d’un projet, souvent dans le cadre d’un contrat "clé en main".</p>
+                        <p class="text-gray-700"><b>Responsabilité :</b> Il livre un ouvrage complet, prêt à l’usage, en respectant les délais, le budget et les spécifications techniques.</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="p-4 font-semibold">Fonction</th>
+                                <th class="p-4 font-semibold text-center">Porte le projet ?</th>
+                                <th class="p-4 font-semibold text-center">Conçoit ?</th>
+                                <th class="p-4 font-semibold text-center">Réalise ?</th>
+                                <th class="p-4 font-semibold text-center">Conseille le client ?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-4 font-bold">AMO</td>
+                                <td class="p-4 text-center text-2xl text-red-600">❌</td>
+                                <td class="p-4 text-center text-2xl text-red-600">❌</td>
+                                <td class="p-4 text-center text-2xl text-red-600">❌</td>
+                                <td class="p-4 text-center text-2xl text-green-600">✅</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-4 font-bold">Maître d’œuvre</td>
+                                <td class="p-4 text-center text-2xl text-red-600">❌</td>
+                                <td class="p-4 text-center text-2xl text-green-600">✅</td>
+                                <td class="p-4 text-center text-lg text-gray-600">✅ (suivi)</td>
+                                <td class="p-4 text-center text-2xl text-red-600">❌</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold">EPCiste</td>
+                                <td class="p-4 text-center text-2xl text-green-600">✅</td>
+                                <td class="p-4 text-center text-2xl text-green-600">✅</td>
+                                <td class="p-4 text-center text-2xl text-green-600">✅</td>
+                                <td class="p-4 text-center text-2xl text-red-600">❌</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -152,12 +209,12 @@
                     <div class="bg-white p-6 rounded-lg border-l-4 border-blue-500 shadow-md">
                         <h4 class="font-bold text-xl mb-3">Obligation de Moyens</h4>
                         <p class="text-gray-700">S'engager à tout mettre en œuvre (compétences, ressources) pour atteindre un but, sans garantir le résultat final. La preuve d'une faute incombe au client.</p>
-                        <p class="mt-4 text-sm text-gray-500"><strong>Analogie:</strong> Un médecin qui s'engage à fournir les meilleurs soins possibles.</p>
+                        <p class="mt-4 text-sm text-gray-500"><strong>Analogie CVC :</strong> Un expert qui s'engage à <b>concevoir et installer le meilleur système CVC possible</b> pour votre bâtiment, en respectant toutes les règles de l'art pour optimiser sa performance.</p>
                     </div>
                     <div class="bg-white p-6 rounded-lg border-l-4 border-green-500 shadow-md">
                         <h4 class="font-bold text-xl mb-3">Obligation de Résultat</h4>
                         <p class="text-gray-700">S'engager à ce que l'objectif soit atteint. La simple non-atteinte du résultat suffit à engager la responsabilité.</p>
-                        <p class="mt-4 text-sm text-gray-500"><strong>Analogie:</strong> Un transporteur qui s'engage à livrer un colis à bon port.</p>
+                        <p class="mt-4 text-sm text-gray-500"><strong>Analogie CVC :</strong> Un expert qui s'engage à ce que la nouvelle CVC <b>maintienne la température de votre salle de serveurs en dessous de 21°C</b>. Le résultat doit être atteint, peu importe les moyens.</p>
                     </div>
                 </div>
             </div>
@@ -167,18 +224,17 @@
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Comparateur Interactif des Contrats</h2>
-                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Utilisez les boutons ci-dessous pour comparer les contrats AMO, MOE et EPC sur des critères spécifiques. Cette vue côte à côte est conçue pour mettre en évidence leurs différences fondamentales et vous aider à les maîtriser.</p>
+                    <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Utilisez les boutons ci-dessous pour comparer les contrats AMO, MOE et EPC sur des critères spécifiques.</p>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-10">
-                    <button data-criterion="role" class="comparator-btn bg-blue-500 text-white px-4 py-2 rounded-full shadow">Rôle d'Helexia</button>
-                    <button data-criterion="schema" class="comparator-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full">Schéma Contractuel</button>
+                    <button data-criterion="schema" class="comparator-btn bg-blue-500 text-white px-4 py-2 rounded-full shadow">Schéma Contractuel</button>
                     <button data-criterion="obligations" class="comparator-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full">Obligations & Assurances</button>
                     <button data-criterion="analyse" class="comparator-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full">Analyse Commerciale</button>
                 </div>
 
                 <div id="comparator-content">
-                    <div id="comparator-grid-view" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div id="comparator-grid-view" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
                             <h3 class="font-bold text-2xl text-center mb-4">AMO</h3>
                             <div id="content-amo" class="space-y-4"></div>
@@ -193,7 +249,7 @@
                         </div>
                     </div>
 
-                    <div id="schema-details-view" class="hidden">
+                    <div id="schema-details-view">
                         <div id="schema-tabs" class="border-b border-gray-200 mb-6">
                             <nav class="-mb-px flex space-x-8" aria-label="Tabs">
                                 <button data-schema="amo" class="schema-tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">AMO</button>
@@ -227,6 +283,21 @@
                 </div>
             </div>
         </section>
+        
+        <section id="questionnaire" class="main-section container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Questionnaire d'Évaluation</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Évaluez votre compréhension des concepts clés avant et après avoir parcouru la formation.</p>
+            </div>
+            <div id="quiz-tabs" class="border-b border-gray-200 mb-6">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <button data-quiz="avant" class="quiz-tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Avant la formation</button>
+                    <button data-quiz="apres" class="quiz-tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Après la formation</button>
+                </nav>
+            </div>
+            <div id="quiz-content" class="bg-white p-6 sm:p-8 rounded-lg shadow-md">
+            </div>
+        </section>
     </main>
 
     <footer class="bg-gray-800 text-white mt-16">
@@ -238,26 +309,27 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const trainingData = {
-                role: {
-                    amo: `<h4 class="font-semibold text-lg">Le Conseiller Stratégique</h4><p class="text-gray-600">Notre promesse : "Nous vous aidons à piloter, vous gardez le contrôle." Nous sommes le bras droit technique du client, nous l'aidons à définir le besoin, analyser les offres et suivre le projet sans décider à sa place.</p>`,
-                    moe: `<h4 class="font-semibold text-lg">Le Chef d'Orchestre</h4><p class="text-gray-600">Notre promesse : "Nous pilotons votre projet de A à Z, vous n'avez qu'un seul interlocuteur." Nous concevons la solution et dirigeons l'exécution des travaux jusqu'à la réception.</p>`,
-                    epc: `<h4 class="font-semibold text-lg">Le Garant de la Performance</h4><p class="text-gray-600">Notre promesse : "Nous garantissons vos futures économies d'énergie." Nous nous engageons sur un résultat chiffré et mesurable, transformant un projet technique en un investissement à ROI garanti.</p>`
-                },
                 schema: {
                     amo: `
                         <div class="space-y-8">
                             <div>
                                 <h4 class="font-semibold text-xl text-center mb-6">Schéma AMO : Le Client pilote</h4>
-                                <div class="flex flex-col space-y-8 items-center">
-                                    <div class="flex items-center w-full max-w-2xl">
-                                        <div class="diagram-box">Client</div>
-                                        <div class="diagram-arrow"><span class="diagram-arrow-label">Contrat AMO</span></div>
-                                        <div class="diagram-box">Helexia</div>
+                                <div class="flex flex-col items-center">
+                                    <div class="diagram-box">Client</div>
+                                    <div class="w-px h-8 bg-gray-400"></div>
+                                    <div class="w-full max-w-xl h-px bg-gray-400 relative">
+                                        <div class="absolute left-0 top-0 w-px h-8 bg-gray-400"></div>
+                                        <div class="absolute right-0 top-0 w-px h-8 bg-gray-400"></div>
                                     </div>
-                                    <div class="flex items-center w-full max-w-2xl">
-                                        <div class="diagram-box">Client</div>
-                                        <div class="diagram-arrow"><span class="diagram-arrow-label">Contrat Travaux</span></div>
-                                        <div class="diagram-box">Entreprise</div>
+                                    <div class="flex w-full max-w-xl justify-between mt-8">
+                                        <div class="flex flex-col items-center">
+                                            <div class="diagram-box">Helexia</div>
+                                            <div class="text-sm mt-2 text-gray-600">Contrat AMO</div>
+                                        </div>
+                                        <div class="flex flex-col items-center">
+                                            <div class="diagram-box">Entreprise</div>
+                                            <div class="text-sm mt-2 text-gray-600">Contrat Travaux</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -300,32 +372,42 @@
                     moe: `
                        <div class="space-y-8">
                             <div>
-                                <h4 class="font-semibold text-xl text-center mb-6">Schéma MOE : Helexia pilote</h4>
-                                <div class="flex items-center justify-center">
-                                    <div class="flex items-center w-full max-w-4xl">
-                                        <div class="diagram-box">Client</div>
-                                        <div class="diagram-arrow"><span class="diagram-arrow-label">Contrat MOE</span></div>
-                                        <div class="diagram-box">Helexia</div>
-                                        <div class="diagram-arrow"><span class="diagram-arrow-label">Contrat de Sous-traitance</span></div>
-                                        <div class="diagram-box">Entreprise</div>
+                                <h4 class="font-semibold text-xl text-center mb-6">Schéma MOE : Helexia conçoit et supervise</h4>
+                                <div class="flex flex-col items-center">
+                                    <div class="diagram-box">Client</div>
+                                    <div class="w-px h-8 bg-gray-400"></div>
+                                    <div class="w-full max-w-xl h-px bg-gray-400 relative">
+                                        <div class="absolute left-0 top-0 w-px h-8 bg-gray-400"></div>
+                                        <div class="absolute right-0 top-0 w-px h-8 bg-gray-400"></div>
+                                    </div>
+                                    <div class="flex w-full max-w-xl justify-between mt-8">
+                                        <div class="flex flex-col items-center">
+                                            <div class="diagram-box">Helexia</div>
+                                            <div class="text-sm mt-2 text-gray-600">Contrat MOE</div>
+                                        </div>
+                                        <div class="flex flex-col items-center">
+                                            <div class="diagram-box">Entreprise</div>
+                                            <div class="text-sm mt-2 text-gray-600">Contrat Travaux</div>
+                                        </div>
                                     </div>
                                 </div>
+                                <p class="text-center max-w-3xl mx-auto mt-8 text-gray-700"><b>Sur le fond :</b> La structure est similaire à l'AMO : le Client signe deux contrats distincts. La différence fondamentale est la nature du rôle d'Helexia : nous ne sommes plus simple conseiller, nous sommes <b>concepteur et pilote</b>. Nous sommes responsables de la conception technique et de la supervision des travaux réalisés par l'Entreprise.</p>
                             </div>
                             <hr>
                             <div class="grid md:grid-cols-2 gap-8">
                                 <div>
                                     <h5 class="font-bold text-lg mb-3">Obligations Générales</h5>
                                     <ul class="list-disc list-inside space-y-2 text-gray-600">
-                                        <li><b>Client :</b> Doit payer Helexia pour la mission globale et valider les étapes clés.</li>
-                                        <li><b>Helexia :</b> Doit concevoir, piloter les travaux, et porter la responsabilité d'un <b>ouvrage fonctionnel</b>.</li>
-                                        <li><b>Entreprise :</b> Doit réaliser les travaux pour Helexia (son client direct).</li>
+                                        <li><b>Client :</b> Doit payer Helexia pour la conception/supervision ET l'Entreprise pour les travaux.</li>
+                                        <li><b>Helexia :</b> Doit fournir une conception correcte et superviser le chantier (obligation de résultat sur la conception).</li>
+                                        <li><b>Entreprise :</b> Doit réaliser les travaux pour le Client, sous la supervision d'Helexia.</li>
                                     </ul>
                                 </div>
                                 <div>
                                     <h5 class="font-bold text-lg mb-3">Flux Financiers (Qui paie qui ?)</h5>
                                     <ul class="list-disc list-inside space-y-2 text-gray-600">
-                                        <li><b>Client → Helexia</b> (pour la totalité de la mission).</li>
-                                        <li><b>Helexia → Entreprise</b> (pour les travaux sous-traités).</li>
+                                        <li><b>Client → Helexia</b> (pour les honoraires de conception et suivi).</li>
+                                        <li><b>Client → Entreprise</b> (pour les factures de travaux).</li>
                                     </ul>
                                 </div>
                             </div>
@@ -335,22 +417,22 @@
                                 <div class="grid md:grid-cols-2 gap-8 mt-4">
                                     <div class="bg-white p-4 rounded-lg border">
                                         <h6 class="font-semibold">Rôle d'Helexia</h6>
-                                        <p class="text-sm text-gray-600 mt-2">Nous concevons la solution CVC, nous choisissons l'installateur, nous signons le contrat avec lui, et nous pilotons le chantier. Nous sommes l'unique responsable face au client.</p>
-                                        <p class="text-sm text-gray-600 mt-2"><b>Obligation :</b> Nous avons une obligation de résultat sur la <b>conformité et le bon fonctionnement</b> de l'ouvrage.</p>
+                                        <p class="text-sm text-gray-600 mt-2">Nous réalisons les plans et le cahier des charges technique de la CVC. Nous aidons le client à choisir l'installateur, puis nous dirigeons les réunions de chantier et validons la conformité des travaux.</p>
+                                        <p class="text-sm text-gray-600 mt-2"><b>Obligation :</b> Notre responsabilité est engagée si la CVC est mal dimensionnée (erreur de conception) ou si nous n'avons pas détecté une malfaçon évidente (défaut de supervision).</p>
                                     </div>
                                     <div class="bg-white p-4 rounded-lg border">
                                         <h6 class="font-semibold">Rôle du Prestataire (Installateur CVC)</h6>
-                                        <p class="text-sm text-gray-600 mt-2">Il est notre sous-traitant. Il doit installer la CVC selon les plans et spécifications que nous lui avons fournis.</p>
-                                        <p class="text-sm text-gray-600 mt-2"><b>Obligation :</b> Il a une obligation de résultat envers nous, Helexia, sur la qualité de son exécution.</p>
+                                        <p class="text-sm text-gray-600 mt-2">Il signe un contrat avec le client et doit installer la CVC en suivant nos plans et nos directives sur le chantier.</p>
+                                        <p class="text-sm text-gray-600 mt-2"><b>Obligation :</b> Il a une obligation de résultat sur la qualité de son exécution directement envers le client.</p>
                                     </div>
                                 </div>
                                 <div class="mt-6">
                                     <h6 class="font-semibold mb-2">Exemple de Clause de Responsabilité (MOE)</h6>
-                                    <div class="clause-box">Helexia s'engage à livrer un ouvrage conforme aux spécifications du cahier des charges et apte à sa destination. La responsabilité d'Helexia est engagée si l'ouvrage présente des vices ou des malfaçons le rendant impropre à l'usage auquel il est destiné, que ces défauts proviennent de la conception ou de l'exécution.</div>
+                                    <div class="clause-box">Helexia s'engage à concevoir et à piloter la réalisation de l'installation CVC conformément aux règles de l'art et aux spécifications définies dans le cahier des charges. La responsabilité d'Helexia est engagée en cas de défaut de conception ou de manquement dans sa mission de supervision des travaux qui rendrait l'ouvrage impropre à sa destination.</div>
                                 </div>
                                 <div class="mt-6 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
-                                    <p class="text-sm font-semibold">Conclusion : Qui porte l'obligation de résultat ?</p>
-                                    <p class="text-sm text-gray-700 mt-1">Envers le client, c'est <b>TOUJOURS Helexia</b> qui porte l'obligation de résultat pour la conformité et le bon fonctionnement de l'ouvrage. Si la CVC ne marche pas, c'est notre responsabilité. Notre recours contre le prestataire est notre affaire interne. La MOE garantit un ouvrage fonctionnel, mais pas une performance chiffrée.</p>
+                                    <p class="text-sm font-semibold">Conclusion : La différence clé avec l'EPC</p>
+                                    <p class="text-sm text-gray-700 mt-1">En MOE, le client garde la charge de deux contrats. En cas de litige, il peut y avoir un débat pour savoir si la faute incombe au concepteur (Helexia) ou à l'exécutant (l'Entreprise). En EPC, ce débat n'existe pas pour le client : <b>Helexia est son unique responsable pour tout</b>, de la conception à l'exécution, en plus de garantir la performance.</p>
                                 </div>
                             </div>
                         </div>
@@ -416,16 +498,53 @@
                     `
                 },
                 obligations: {
-                    amo: `<h4 class="font-semibold text-lg">Obligation de Moyens</h4><p class="text-gray-600">Notre devoir est de bien conseiller.</p><hr class="my-3"><h4 class="font-semibold text-lg">Assurance Requise</h4><p class="text-gray-600">Responsabilité Civile Professionnelle (RC Pro).</p>`,
-                    moe: `<h4 class="font-semibold text-lg">Résultat (Ouvrage fonctionnel)</h4><p class="text-gray-600">Nous garantissons la conformité et le bon fonctionnement de l'ouvrage.</p><hr class="my-3"><h4 class="font-semibold text-lg">Assurances Requises</h4><p class="text-gray-600">RC Pro + <b>RC Décennale OBLIGATOIRE</b>.</p>`,
-                    epc: `<h4 class="font-semibold text-lg">Double Résultat (Ouvrage + Performance)</h4><p class="text-gray-600">Nous garantissons l'ouvrage ET la performance énergétique chiffrée.</p><hr class="my-3"><h4 class="font-semibold text-lg">Assurances Requises</h4><p class="text-gray-600">RC Pro + RC Décennale + Garanties financières.</p>`
+                    amo: `<p><b>Obligation :</b> Moyens (devoir de conseil).</p><hr class="my-3"><p><b>Assurance :</b> Responsabilité Civile Professionnelle (RC Pro).</p>`,
+                    moe: `<p><b>Obligation :</b> Résultat (Conception) & Moyens (Suivi).</p><hr class="my-3"><p><b>Assurances :</b> RC Pro + <b>RC Décennale OBLIGATOIRE</b>.</p>`,
+                    epc: `<p><b>Obligation :</b> Double Résultat (Ouvrage + Performance).</p><hr class="my-3"><p><b>Assurances :</b> RC Pro + RC Décennale + Garanties financières.</p>`
                 },
                 analyse: {
-                    amo: `<h4 class="font-semibold text-lg">Risques & Opportunités</h4><p class="text-gray-600">Contrat simple, cycle de vente court. Idéal pour clients déjà structurés. CA limité aux honoraires.</p><div class="mt-6"><p class="font-semibold text-sm mb-1">Risque pour le Client</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-red-500 h-4 rounded-full" style="width: 80%"></div></div></div><div class="mt-4"><p class="font-semibold text-sm mb-1">Potentiel de CA pour Helexia</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-blue-500 h-4 rounded-full" style="width: 20%"></div></div></div>`,
-                    moe: `<h4 class="font-semibold text-lg">Risques & Opportunités</h4><p class="text-gray-600">CA élevé (honoraires + marge travaux). Contrôle total de la qualité. Proposition de valeur forte (tranquillité).</p><div class="mt-6"><p class="font-semibold text-sm mb-1">Risque pour le Client</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-yellow-500 h-4 rounded-full" style="width: 30%"></div></div></div><div class="mt-4"><p class="font-semibold text-sm mb-1">Potentiel de CA pour Helexia</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-blue-500 h-4 rounded-full" style="width: 70%"></div></div></div>`,
-                    epc: `<h4 class="font-semibold text-lg">Risques & Opportunités</h4><p class="text-gray-600">CA et marges les plus élevés. Contrats longs et récurrents. Argument commercial ultime pour DAFs.</p><div class="mt-6"><p class="font-semibold text-sm mb-1">Risque pour le Client</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-green-500 h-4 rounded-full" style="width: 5%"></div></div></div><div class="mt-4"><p class="font-semibold text-sm mb-1">Potentiel de CA pour Helexia</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-blue-500 h-4 rounded-full" style="width: 100%"></div></div></div>`
+                    amo: `<div class="space-y-4"><div><p class="font-semibold text-sm mb-1">Risque pour le Client</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-red-500 h-4 rounded-full" style="width: 80%"></div></div><p class="text-xs text-gray-500 mt-1"><b>Exemple :</b> Le client choisit un prestataire non qualifié qui fait faillite ; le projet est bloqué.</p></div><div><p class="font-semibold text-sm mb-1">Potentiel de CA pour Helexia</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-blue-500 h-4 rounded-full" style="width: 20%"></div></div></div></div>`,
+                    moe: `<div class="space-y-4"><div><p class="font-semibold text-sm mb-1">Risque pour le Client</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-yellow-500 h-4 rounded-full" style="width: 40%"></div></div><p class="text-xs text-gray-500 mt-1"><b>Exemple :</b> Un litige éclate entre Helexia (concepteur) et l'entreprise (exécutant) sur l'origine d'une malfaçon, retardant la résolution pour le client.</p></div><div><p class="font-semibold text-sm mb-1">Potentiel de CA pour Helexia</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-blue-500 h-4 rounded-full" style="width: 50%"></div></div></div></div>`,
+                    epc: `<div class="space-y-4"><div><p class="font-semibold text-sm mb-1">Risque pour le Client</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-green-500 h-4 rounded-full" style="width: 5%"></div></div><p class="text-xs text-gray-500 mt-1"><b>Exemple :</b> Le client modifie les conditions d'usage du bâtiment (ex: surchauffe volontaire), ce qui annule la garantie de performance.</p></div><div><p class="font-semibold text-sm mb-1">Potentiel de CA pour Helexia</p><div class="w-full bg-gray-200 rounded-full h-4"><div class="bg-blue-500 h-4 rounded-full" style="width: 100%"></div></div></div></div>`
                 }
             };
+            
+            const quizData = [
+                {
+                    q: "Qui signe le contrat avec l'entreprise de travaux dans un contrat MOE ?",
+                    options: ["Helexia", "Le Client", "Les deux"],
+                    answer: "Le Client",
+                    explanation: "En MOE stricte, Helexia conçoit et supervise, mais le Client (Maître d'Ouvrage) reste celui qui contractualise avec l'entreprise qui exécute les travaux."
+                },
+                {
+                    q: "Quelle est la différence FONDAMENTALE entre un contrat MOE et un contrat EPC ?",
+                    options: ["Le prix", "La gestion des sous-traitants", "L'engagement de performance chiffrée"],
+                    answer: "L'engagement de performance chiffrée",
+                    explanation: "L'EPC est le seul contrat qui inclut une garantie sur un résultat mesurable (ex: kWh économisés). C'est sa caractéristique principale."
+                },
+                {
+                    q: "Dans quel contrat le risque pour le client est-il le plus élevé ?",
+                    options: ["AMO", "MOE", "EPC"],
+                    answer: "AMO",
+                    explanation: "En AMO, le client porte l'entière responsabilité du projet, des choix techniques et de la relation avec les entreprises. Le rôle d'Helexia est limité au conseil."
+                },
+                {
+                    q: "Quelle assurance est obligatoire pour Helexia en MOE et EPC, mais pas en AMO ?",
+                    options: ["La RC Professionnelle", "La RC Décennale", "La garantie financière"],
+                    answer: "La RC Décennale",
+                    explanation: "Dès qu'Helexia intervient en tant que concepteur (MOE) ou EPCiste, l'assurance décennale devient obligatoire pour couvrir les dommages majeurs sur l'ouvrage pendant 10 ans."
+                },
+                {
+                    q: "Dans quel contrat Helexia a-t-elle une obligation de MOYENS envers le client ?",
+                    options: ["AMO", "MOE", "EPC"],
+                    answer: "AMO",
+                    explanation: "En AMO, le rôle d'Helexia est de conseiller. C'est une obligation de moyens. En MOE et EPC, Helexia a une obligation de résultat sur la conformité de l'ouvrage (et la performance pour l'EPC)."
+                }
+            ];
+            
+            let userScores = { avant: null, apres: null };
+            let userAnswers = { avant: {}, apres: {} };
+            let questionsOrderApres = [...quizData].sort(() => Math.random() - 0.5);
 
             const comparatorBtns = document.querySelectorAll('.comparator-btn');
             const gridView = document.getElementById('comparator-grid-view');
@@ -483,7 +602,7 @@
                 btn.addEventListener('click', () => updateComparator(btn.dataset.criterion));
             });
             
-            updateComparator('role'); // Initialize with the first criterion
+            updateComparator('schema');
 
             // Argumentaire Section Logic
             const decisionTreeContainer = document.getElementById('decision-tree');
@@ -502,7 +621,7 @@
                         content = `<div class="text-center p-4 bg-blue-100 border-l-4 border-blue-500 rounded"><p class="font-bold text-xl">Proposer l'AMO</p><p class="mt-2 text-gray-700">C'est un client qui veut garder la maîtrise et qui a les ressources pour le faire.</p></div><button onclick="window.renderDecisionTree(1)" class="text-sm text-blue-600 mt-4 block mx-auto">Recommencer</button>`;
                         break;
                     case 'moe':
-                        content = `<div class="text-center p-4 bg-green-100 border-l-4 border-green-500 rounded"><p class="font-bold text-xl">Proposer la MOE</p><p class="mt-2 text-gray-700">C'est la solution "confort et sécurité" par excellence pour un projet bien mené sans souci.</p></div><button onclick="window.renderDecisionTree(1)" class="text-sm text-blue-600 mt-4 block mx-auto">Recommencer</button>`;
+                        content = `<div class="text-center p-4 bg-green-100 border-l-4 border-green-500 rounded"><p class="font-bold text-xl">Proposer la MOE</p><p class="mt-2 text-gray-700">C'est la solution "confort et expertise" par excellence pour un projet bien mené sans souci.</p></div><button onclick="window.renderDecisionTree(1)" class="text-sm text-blue-600 mt-4 block mx-auto">Recommencer</button>`;
                         break;
                     case 'epc':
                         content = `<div class="text-center p-4 bg-yellow-100 border-l-4 border-yellow-500 rounded"><p class="font-bold text-xl">Proposer l'EPC</p><p class="mt-2 text-gray-700">Son besoin n'est pas un projet, c'est une performance financière garantie. C'est votre meilleur argument.</p></div><button onclick="window.renderDecisionTree(1)" class="text-sm text-blue-600 mt-4 block mx-auto">Recommencer</button>`;
@@ -551,6 +670,107 @@
                     }
                 });
             });
+            
+            // Questionnaire Logic
+            const quizTabs = document.querySelectorAll('.quiz-tab-btn');
+            const quizContent = document.getElementById('quiz-content');
+
+            function renderQuiz(type, showResults = false) {
+                const questions = (type === 'avant') ? quizData : questionsOrderApres;
+                let html = `<form id="quiz-form-${type}"><div class="space-y-6">`;
+                
+                questions.forEach((item, index) => {
+                    const questionId = quizData.indexOf(item);
+                    const userAnswer = userAnswers[type][questionId];
+                    html += `
+                        <div>
+                            <p class="font-semibold">${index + 1}. ${item.q}</p>
+                            <div class="mt-2 space-y-2">
+                                ${item.options.map(opt => `
+                                    <label class="flex items-center">
+                                        <input type="radio" name="q${questionId}" value="${opt}" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" ${showResults ? 'disabled' : ''} ${userAnswer === opt ? 'checked' : ''}>
+                                        <span class="ml-3 text-gray-700">${opt}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+
+                if (showResults) {
+                    let score = userScores[type];
+                    let scoreHtml = `<div class="mt-8 text-center p-4 rounded-lg border">
+                                        <h3 class="text-xl font-bold">Votre score : <span class="text-blue-600">${score} / ${quizData.length}</span></h3>`;
+                    if (type === 'apres' && userScores.avant !== null) {
+                         scoreHtml += `<p class="mt-2 text-gray-600">Score avant la formation : ${userScores.avant} / ${quizData.length}</p>`;
+                    }
+                    scoreHtml += `</div>`;
+                    html = scoreHtml + html;
+                } else {
+                    html += `<div class="mt-8 text-center"><button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">Soumettre</button></div>`;
+                }
+                html += '</form>';
+                quizContent.innerHTML = html;
+
+                if (!showResults) {
+                    document.getElementById(`quiz-form-${type}`).addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        handleSubmitQuiz(type);
+                    });
+                } else {
+                     const form = document.getElementById(`quiz-form-${type}`);
+                     questions.forEach((item, index) => {
+                        const questionId = quizData.indexOf(item);
+                        const selectedValue = userAnswers[type][questionId];
+                        const correct = item.answer;
+                        const parentDiv = form.querySelectorAll('.space-y-6 > div')[index];
+                        
+                        let resultHtml = `<div class="mt-3 p-3 rounded-md text-sm">`;
+                        if (selectedValue === correct) {
+                            resultHtml += `<p class="font-bold text-green-800">✅ Correct !</p>`;
+                        } else {
+                             resultHtml += `<p class="font-bold text-red-800">❌ Incorrect.</p>`;
+                        }
+                        resultHtml += `<p class="mt-1"><span class="font-semibold">Explication :</span> ${item.explanation}</p></div>`;
+                        parentDiv.insertAdjacentHTML('beforeend', resultHtml);
+                     });
+                }
+            }
+            
+            function handleSubmitQuiz(type) {
+                const questions = (type === 'avant') ? quizData : questionsOrderApres;
+                let score = 0;
+                const form = document.getElementById(`quiz-form-${type}`);
+                questions.forEach((item, index) => {
+                    const questionId = quizData.indexOf(item);
+                    const selected = form.querySelector(`input[name="q${questionId}"]:checked`);
+                    const selectedValue = selected ? selected.value : null;
+                    userAnswers[type][questionId] = selectedValue;
+                    if (selectedValue === item.answer) {
+                        score++;
+                    }
+                });
+                userScores[type] = score;
+                renderQuiz(type, true);
+            }
+
+            function setupQuizTabs() {
+                quizTabs.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const type = btn.dataset.quiz;
+                        renderQuiz(type, userScores[type] !== null);
+                        quizTabs.forEach(b => {
+                            const isSelected = b.dataset.quiz === type;
+                            b.classList.toggle('border-blue-500', isSelected);
+                            b.classList.toggle('text-blue-600', isSelected);
+                            b.classList.toggle('border-transparent', !isSelected);
+                            b.classList.toggle('text-gray-500', !isSelected);
+                        });
+                    });
+                });
+                 quizTabs[0].click();
+            }
 
             // Navigation Logic
             const mainSections = document.querySelectorAll('.main-section');
@@ -567,6 +787,9 @@
                 if (document.activeElement !== mobileNav) {
                     mobileNav.value = sectionId;
                 }
+                if (sectionId === 'questionnaire') {
+                    setupQuizTabs();
+                }
             }
 
             navLinks.forEach(link => {
@@ -576,6 +799,13 @@
                     setActiveSection(sectionId);
                     window.history.pushState({section: sectionId}, '', `#${sectionId}`);
                 });
+            });
+            
+            document.getElementById('alert-quiz-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = e.target.getAttribute('href').substring(1);
+                setActiveSection(sectionId);
+                window.history.pushState({section: sectionId}, '', `#${sectionId}`);
             });
             
             mobileNav.addEventListener('change', (e) => {
